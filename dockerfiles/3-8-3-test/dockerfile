@@ -5,11 +5,10 @@ FROM buildpack-deps AS builder
 # Create a shallow clone of the implementation repository in the work directory,
 # containing only the code of the specified version/tag.
 WORKDIR /matrixssl
-RUN git clone --branch 3-8-6-open --depth 1 https://github.com/matrixssl/matrixssl.git .
+RUN git clone --branch 3-8-3-open --depth 1 https://github.com/matrixssl/matrixssl.git .
 
 # Standard compilation
-# RUN ./configure
-RUN make clean
+RUN ./configure
 RUN make
 
 # Install to a temporary directory

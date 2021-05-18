@@ -13,7 +13,8 @@ WORKDIR /{{ implementation }}
 RUN git clone --branch {{ tag }} --depth 1 {{ url }} .
 
 # Standard compilation
-RUN ./configure
+# RUN ./configure
+RUN make clean
 RUN make
 
 # Install to a temporary directory

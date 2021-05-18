@@ -8,7 +8,8 @@ WORKDIR /matrixssl
 RUN git clone --branch 3-9-0-open --depth 1 https://github.com/matrixssl/matrixssl.git .
 
 # Standard compilation
-RUN ./configure
+# RUN ./configure
+RUN make clean
 RUN make
 
 # Install to a temporary directory
