@@ -1,0 +1,1479 @@
+---
+kind: pipeline
+name: 3-8-3-open
+
+steps:
+    # Build the implementation and set the appropriate tag
+  - name: build
+    image: docker
+    commands:
+      - docker build .
+        --tag tlsprint/matrixssl:3-8-3-open
+        --file dockerfiles/3-8-3-open/Dockerfile
+
+    # Store the resulting image on the host docker, so it can be used in the
+    # next step.
+    volumes:
+      - name: docker
+        path: /var/run/docker.sock
+
+    # Start the implementation, the system under test, in the background
+  - name: sut
+    image: tlsprint/matrixssl:3-8-3-open
+    detach: true
+
+  - name: verify TLS10
+    image: tlsprint/tlsattackerconnector
+    commands:
+      - sleep 5
+      - connector
+        --targetHost sut
+        --protocolVersion TLS10
+        --cipherSuite "TLS_RSA_WITH_3DES_EDE_CBC_SHA,TLS_RSA_WITH_AES_128_CBC_SHA"
+        --merge-application
+        --test | tee result.log
+      - "grep -e 'ApplicationData: APPLICATION|ConnectionClosed' -e 'ApplicationData: APPLICATION|ALERT_WARNING_CLOSE_NOTIFY|ConnectionClosed' result.log"
+
+  - name: verify TLS11
+    image: tlsprint/tlsattackerconnector
+    commands:
+      - sleep 5
+      - connector
+        --targetHost sut
+        --protocolVersion TLS11
+        --cipherSuite "TLS_RSA_WITH_3DES_EDE_CBC_SHA,TLS_RSA_WITH_AES_128_CBC_SHA"
+        --merge-application
+        --test | tee result.log
+      - "grep -e 'ApplicationData: APPLICATION|ConnectionClosed' -e 'ApplicationData: APPLICATION|ALERT_WARNING_CLOSE_NOTIFY|ConnectionClosed' result.log"
+
+  - name: verify TLS12
+    image: tlsprint/tlsattackerconnector
+    commands:
+      - sleep 5
+      - connector
+        --targetHost sut
+        --protocolVersion TLS12
+        --cipherSuite "TLS_RSA_WITH_3DES_EDE_CBC_SHA,TLS_RSA_WITH_AES_128_CBC_SHA"
+        --merge-application
+        --test | tee result.log
+      - "grep -e 'ApplicationData: APPLICATION|ConnectionClosed' -e 'ApplicationData: APPLICATION|ALERT_WARNING_CLOSE_NOTIFY|ConnectionClosed' result.log"
+
+  - name: publish
+    image: docker
+    commands:
+      - docker login --username $DOCKER_USERNAME --password $DOCKER_PASSWORD
+      - docker push tlsprint/matrixssl:3-8-3-open
+    environment:
+      DOCKER_USERNAME:
+        from_secret: docker_username
+      DOCKER_PASSWORD:
+        from_secret: docker_password
+
+    # Give access to host docker, the previously build image is available here.
+    volumes:
+      - name: docker
+        path: /var/run/docker.sock
+
+    when:
+      branch:
+        - master
+
+
+volumes:
+    # Expose host docker to build steps
+  - name: docker
+    host:
+      path: /var/run/docker.sock
+
+---
+kind: pipeline
+name: 3-8-4-open
+
+steps:
+    # Build the implementation and set the appropriate tag
+  - name: build
+    image: docker
+    commands:
+      - docker build .
+        --tag tlsprint/matrixssl:3-8-4-open
+        --file dockerfiles/3-8-4-open/Dockerfile
+
+    # Store the resulting image on the host docker, so it can be used in the
+    # next step.
+    volumes:
+      - name: docker
+        path: /var/run/docker.sock
+
+    # Start the implementation, the system under test, in the background
+  - name: sut
+    image: tlsprint/matrixssl:3-8-4-open
+    detach: true
+
+  - name: verify TLS10
+    image: tlsprint/tlsattackerconnector
+    commands:
+      - sleep 5
+      - connector
+        --targetHost sut
+        --protocolVersion TLS10
+        --cipherSuite "TLS_RSA_WITH_3DES_EDE_CBC_SHA,TLS_RSA_WITH_AES_128_CBC_SHA"
+        --merge-application
+        --test | tee result.log
+      - "grep -e 'ApplicationData: APPLICATION|ConnectionClosed' -e 'ApplicationData: APPLICATION|ALERT_WARNING_CLOSE_NOTIFY|ConnectionClosed' result.log"
+
+  - name: verify TLS11
+    image: tlsprint/tlsattackerconnector
+    commands:
+      - sleep 5
+      - connector
+        --targetHost sut
+        --protocolVersion TLS11
+        --cipherSuite "TLS_RSA_WITH_3DES_EDE_CBC_SHA,TLS_RSA_WITH_AES_128_CBC_SHA"
+        --merge-application
+        --test | tee result.log
+      - "grep -e 'ApplicationData: APPLICATION|ConnectionClosed' -e 'ApplicationData: APPLICATION|ALERT_WARNING_CLOSE_NOTIFY|ConnectionClosed' result.log"
+
+  - name: verify TLS12
+    image: tlsprint/tlsattackerconnector
+    commands:
+      - sleep 5
+      - connector
+        --targetHost sut
+        --protocolVersion TLS12
+        --cipherSuite "TLS_RSA_WITH_3DES_EDE_CBC_SHA,TLS_RSA_WITH_AES_128_CBC_SHA"
+        --merge-application
+        --test | tee result.log
+      - "grep -e 'ApplicationData: APPLICATION|ConnectionClosed' -e 'ApplicationData: APPLICATION|ALERT_WARNING_CLOSE_NOTIFY|ConnectionClosed' result.log"
+
+  - name: publish
+    image: docker
+    commands:
+      - docker login --username $DOCKER_USERNAME --password $DOCKER_PASSWORD
+      - docker push tlsprint/matrixssl:3-8-4-open
+    environment:
+      DOCKER_USERNAME:
+        from_secret: docker_username
+      DOCKER_PASSWORD:
+        from_secret: docker_password
+
+    # Give access to host docker, the previously build image is available here.
+    volumes:
+      - name: docker
+        path: /var/run/docker.sock
+
+    when:
+      branch:
+        - master
+
+
+volumes:
+    # Expose host docker to build steps
+  - name: docker
+    host:
+      path: /var/run/docker.sock
+
+---
+kind: pipeline
+name: 3-8-6-open
+
+steps:
+    # Build the implementation and set the appropriate tag
+  - name: build
+    image: docker
+    commands:
+      - docker build .
+        --tag tlsprint/matrixssl:3-8-6-open
+        --file dockerfiles/3-8-6-open/Dockerfile
+
+    # Store the resulting image on the host docker, so it can be used in the
+    # next step.
+    volumes:
+      - name: docker
+        path: /var/run/docker.sock
+
+    # Start the implementation, the system under test, in the background
+  - name: sut
+    image: tlsprint/matrixssl:3-8-6-open
+    detach: true
+
+  - name: verify TLS10
+    image: tlsprint/tlsattackerconnector
+    commands:
+      - sleep 5
+      - connector
+        --targetHost sut
+        --protocolVersion TLS10
+        --cipherSuite "TLS_RSA_WITH_3DES_EDE_CBC_SHA,TLS_RSA_WITH_AES_128_CBC_SHA"
+        --merge-application
+        --test | tee result.log
+      - "grep -e 'ApplicationData: APPLICATION|ConnectionClosed' -e 'ApplicationData: APPLICATION|ALERT_WARNING_CLOSE_NOTIFY|ConnectionClosed' result.log"
+
+  - name: verify TLS11
+    image: tlsprint/tlsattackerconnector
+    commands:
+      - sleep 5
+      - connector
+        --targetHost sut
+        --protocolVersion TLS11
+        --cipherSuite "TLS_RSA_WITH_3DES_EDE_CBC_SHA,TLS_RSA_WITH_AES_128_CBC_SHA"
+        --merge-application
+        --test | tee result.log
+      - "grep -e 'ApplicationData: APPLICATION|ConnectionClosed' -e 'ApplicationData: APPLICATION|ALERT_WARNING_CLOSE_NOTIFY|ConnectionClosed' result.log"
+
+  - name: verify TLS12
+    image: tlsprint/tlsattackerconnector
+    commands:
+      - sleep 5
+      - connector
+        --targetHost sut
+        --protocolVersion TLS12
+        --cipherSuite "TLS_RSA_WITH_3DES_EDE_CBC_SHA,TLS_RSA_WITH_AES_128_CBC_SHA"
+        --merge-application
+        --test | tee result.log
+      - "grep -e 'ApplicationData: APPLICATION|ConnectionClosed' -e 'ApplicationData: APPLICATION|ALERT_WARNING_CLOSE_NOTIFY|ConnectionClosed' result.log"
+
+  - name: publish
+    image: docker
+    commands:
+      - docker login --username $DOCKER_USERNAME --password $DOCKER_PASSWORD
+      - docker push tlsprint/matrixssl:3-8-6-open
+    environment:
+      DOCKER_USERNAME:
+        from_secret: docker_username
+      DOCKER_PASSWORD:
+        from_secret: docker_password
+
+    # Give access to host docker, the previously build image is available here.
+    volumes:
+      - name: docker
+        path: /var/run/docker.sock
+
+    when:
+      branch:
+        - master
+
+
+volumes:
+    # Expose host docker to build steps
+  - name: docker
+    host:
+      path: /var/run/docker.sock
+
+---
+kind: pipeline
+name: 3-8-7-open
+
+steps:
+    # Build the implementation and set the appropriate tag
+  - name: build
+    image: docker
+    commands:
+      - docker build .
+        --tag tlsprint/matrixssl:3-8-7-open
+        --file dockerfiles/3-8-7-open/Dockerfile
+
+    # Store the resulting image on the host docker, so it can be used in the
+    # next step.
+    volumes:
+      - name: docker
+        path: /var/run/docker.sock
+
+    # Start the implementation, the system under test, in the background
+  - name: sut
+    image: tlsprint/matrixssl:3-8-7-open
+    detach: true
+
+  - name: verify TLS10
+    image: tlsprint/tlsattackerconnector
+    commands:
+      - sleep 5
+      - connector
+        --targetHost sut
+        --protocolVersion TLS10
+        --cipherSuite "TLS_RSA_WITH_3DES_EDE_CBC_SHA,TLS_RSA_WITH_AES_128_CBC_SHA"
+        --merge-application
+        --test | tee result.log
+      - "grep -e 'ApplicationData: APPLICATION|ConnectionClosed' -e 'ApplicationData: APPLICATION|ALERT_WARNING_CLOSE_NOTIFY|ConnectionClosed' result.log"
+
+  - name: verify TLS11
+    image: tlsprint/tlsattackerconnector
+    commands:
+      - sleep 5
+      - connector
+        --targetHost sut
+        --protocolVersion TLS11
+        --cipherSuite "TLS_RSA_WITH_3DES_EDE_CBC_SHA,TLS_RSA_WITH_AES_128_CBC_SHA"
+        --merge-application
+        --test | tee result.log
+      - "grep -e 'ApplicationData: APPLICATION|ConnectionClosed' -e 'ApplicationData: APPLICATION|ALERT_WARNING_CLOSE_NOTIFY|ConnectionClosed' result.log"
+
+  - name: verify TLS12
+    image: tlsprint/tlsattackerconnector
+    commands:
+      - sleep 5
+      - connector
+        --targetHost sut
+        --protocolVersion TLS12
+        --cipherSuite "TLS_RSA_WITH_3DES_EDE_CBC_SHA,TLS_RSA_WITH_AES_128_CBC_SHA"
+        --merge-application
+        --test | tee result.log
+      - "grep -e 'ApplicationData: APPLICATION|ConnectionClosed' -e 'ApplicationData: APPLICATION|ALERT_WARNING_CLOSE_NOTIFY|ConnectionClosed' result.log"
+
+  - name: publish
+    image: docker
+    commands:
+      - docker login --username $DOCKER_USERNAME --password $DOCKER_PASSWORD
+      - docker push tlsprint/matrixssl:3-8-7-open
+    environment:
+      DOCKER_USERNAME:
+        from_secret: docker_username
+      DOCKER_PASSWORD:
+        from_secret: docker_password
+
+    # Give access to host docker, the previously build image is available here.
+    volumes:
+      - name: docker
+        path: /var/run/docker.sock
+
+    when:
+      branch:
+        - master
+
+
+volumes:
+    # Expose host docker to build steps
+  - name: docker
+    host:
+      path: /var/run/docker.sock
+
+---
+kind: pipeline
+name: 3-8-7a-open
+
+steps:
+    # Build the implementation and set the appropriate tag
+  - name: build
+    image: docker
+    commands:
+      - docker build .
+        --tag tlsprint/matrixssl:3-8-7a-open
+        --file dockerfiles/3-8-7a-open/Dockerfile
+
+    # Store the resulting image on the host docker, so it can be used in the
+    # next step.
+    volumes:
+      - name: docker
+        path: /var/run/docker.sock
+
+    # Start the implementation, the system under test, in the background
+  - name: sut
+    image: tlsprint/matrixssl:3-8-7a-open
+    detach: true
+
+  - name: verify TLS10
+    image: tlsprint/tlsattackerconnector
+    commands:
+      - sleep 5
+      - connector
+        --targetHost sut
+        --protocolVersion TLS10
+        --cipherSuite "TLS_RSA_WITH_3DES_EDE_CBC_SHA,TLS_RSA_WITH_AES_128_CBC_SHA"
+        --merge-application
+        --test | tee result.log
+      - "grep -e 'ApplicationData: APPLICATION|ConnectionClosed' -e 'ApplicationData: APPLICATION|ALERT_WARNING_CLOSE_NOTIFY|ConnectionClosed' result.log"
+
+  - name: verify TLS11
+    image: tlsprint/tlsattackerconnector
+    commands:
+      - sleep 5
+      - connector
+        --targetHost sut
+        --protocolVersion TLS11
+        --cipherSuite "TLS_RSA_WITH_3DES_EDE_CBC_SHA,TLS_RSA_WITH_AES_128_CBC_SHA"
+        --merge-application
+        --test | tee result.log
+      - "grep -e 'ApplicationData: APPLICATION|ConnectionClosed' -e 'ApplicationData: APPLICATION|ALERT_WARNING_CLOSE_NOTIFY|ConnectionClosed' result.log"
+
+  - name: verify TLS12
+    image: tlsprint/tlsattackerconnector
+    commands:
+      - sleep 5
+      - connector
+        --targetHost sut
+        --protocolVersion TLS12
+        --cipherSuite "TLS_RSA_WITH_3DES_EDE_CBC_SHA,TLS_RSA_WITH_AES_128_CBC_SHA"
+        --merge-application
+        --test | tee result.log
+      - "grep -e 'ApplicationData: APPLICATION|ConnectionClosed' -e 'ApplicationData: APPLICATION|ALERT_WARNING_CLOSE_NOTIFY|ConnectionClosed' result.log"
+
+  - name: publish
+    image: docker
+    commands:
+      - docker login --username $DOCKER_USERNAME --password $DOCKER_PASSWORD
+      - docker push tlsprint/matrixssl:3-8-7a-open
+    environment:
+      DOCKER_USERNAME:
+        from_secret: docker_username
+      DOCKER_PASSWORD:
+        from_secret: docker_password
+
+    # Give access to host docker, the previously build image is available here.
+    volumes:
+      - name: docker
+        path: /var/run/docker.sock
+
+    when:
+      branch:
+        - master
+
+
+volumes:
+    # Expose host docker to build steps
+  - name: docker
+    host:
+      path: /var/run/docker.sock
+
+---
+kind: pipeline
+name: 3-8-7b-open
+
+steps:
+    # Build the implementation and set the appropriate tag
+  - name: build
+    image: docker
+    commands:
+      - docker build .
+        --tag tlsprint/matrixssl:3-8-7b-open
+        --file dockerfiles/3-8-7b-open/Dockerfile
+
+    # Store the resulting image on the host docker, so it can be used in the
+    # next step.
+    volumes:
+      - name: docker
+        path: /var/run/docker.sock
+
+    # Start the implementation, the system under test, in the background
+  - name: sut
+    image: tlsprint/matrixssl:3-8-7b-open
+    detach: true
+
+  - name: verify TLS10
+    image: tlsprint/tlsattackerconnector
+    commands:
+      - sleep 5
+      - connector
+        --targetHost sut
+        --protocolVersion TLS10
+        --cipherSuite "TLS_RSA_WITH_3DES_EDE_CBC_SHA,TLS_RSA_WITH_AES_128_CBC_SHA"
+        --merge-application
+        --test | tee result.log
+      - "grep -e 'ApplicationData: APPLICATION|ConnectionClosed' -e 'ApplicationData: APPLICATION|ALERT_WARNING_CLOSE_NOTIFY|ConnectionClosed' result.log"
+
+  - name: verify TLS11
+    image: tlsprint/tlsattackerconnector
+    commands:
+      - sleep 5
+      - connector
+        --targetHost sut
+        --protocolVersion TLS11
+        --cipherSuite "TLS_RSA_WITH_3DES_EDE_CBC_SHA,TLS_RSA_WITH_AES_128_CBC_SHA"
+        --merge-application
+        --test | tee result.log
+      - "grep -e 'ApplicationData: APPLICATION|ConnectionClosed' -e 'ApplicationData: APPLICATION|ALERT_WARNING_CLOSE_NOTIFY|ConnectionClosed' result.log"
+
+  - name: verify TLS12
+    image: tlsprint/tlsattackerconnector
+    commands:
+      - sleep 5
+      - connector
+        --targetHost sut
+        --protocolVersion TLS12
+        --cipherSuite "TLS_RSA_WITH_3DES_EDE_CBC_SHA,TLS_RSA_WITH_AES_128_CBC_SHA"
+        --merge-application
+        --test | tee result.log
+      - "grep -e 'ApplicationData: APPLICATION|ConnectionClosed' -e 'ApplicationData: APPLICATION|ALERT_WARNING_CLOSE_NOTIFY|ConnectionClosed' result.log"
+
+  - name: publish
+    image: docker
+    commands:
+      - docker login --username $DOCKER_USERNAME --password $DOCKER_PASSWORD
+      - docker push tlsprint/matrixssl:3-8-7b-open
+    environment:
+      DOCKER_USERNAME:
+        from_secret: docker_username
+      DOCKER_PASSWORD:
+        from_secret: docker_password
+
+    # Give access to host docker, the previously build image is available here.
+    volumes:
+      - name: docker
+        path: /var/run/docker.sock
+
+    when:
+      branch:
+        - master
+
+
+volumes:
+    # Expose host docker to build steps
+  - name: docker
+    host:
+      path: /var/run/docker.sock
+
+---
+kind: pipeline
+name: 3-9-0-open
+
+steps:
+    # Build the implementation and set the appropriate tag
+  - name: build
+    image: docker
+    commands:
+      - docker build .
+        --tag tlsprint/matrixssl:3-9-0-open
+        --file dockerfiles/3-9-0-open/Dockerfile
+
+    # Store the resulting image on the host docker, so it can be used in the
+    # next step.
+    volumes:
+      - name: docker
+        path: /var/run/docker.sock
+
+    # Start the implementation, the system under test, in the background
+  - name: sut
+    image: tlsprint/matrixssl:3-9-0-open
+    detach: true
+
+  - name: verify TLS10
+    image: tlsprint/tlsattackerconnector
+    commands:
+      - sleep 5
+      - connector
+        --targetHost sut
+        --protocolVersion TLS10
+        --cipherSuite "TLS_RSA_WITH_3DES_EDE_CBC_SHA,TLS_RSA_WITH_AES_128_CBC_SHA"
+        --merge-application
+        --test | tee result.log
+      - "grep -e 'ApplicationData: APPLICATION|ConnectionClosed' -e 'ApplicationData: APPLICATION|ALERT_WARNING_CLOSE_NOTIFY|ConnectionClosed' result.log"
+
+  - name: verify TLS11
+    image: tlsprint/tlsattackerconnector
+    commands:
+      - sleep 5
+      - connector
+        --targetHost sut
+        --protocolVersion TLS11
+        --cipherSuite "TLS_RSA_WITH_3DES_EDE_CBC_SHA,TLS_RSA_WITH_AES_128_CBC_SHA"
+        --merge-application
+        --test | tee result.log
+      - "grep -e 'ApplicationData: APPLICATION|ConnectionClosed' -e 'ApplicationData: APPLICATION|ALERT_WARNING_CLOSE_NOTIFY|ConnectionClosed' result.log"
+
+  - name: verify TLS12
+    image: tlsprint/tlsattackerconnector
+    commands:
+      - sleep 5
+      - connector
+        --targetHost sut
+        --protocolVersion TLS12
+        --cipherSuite "TLS_RSA_WITH_3DES_EDE_CBC_SHA,TLS_RSA_WITH_AES_128_CBC_SHA"
+        --merge-application
+        --test | tee result.log
+      - "grep -e 'ApplicationData: APPLICATION|ConnectionClosed' -e 'ApplicationData: APPLICATION|ALERT_WARNING_CLOSE_NOTIFY|ConnectionClosed' result.log"
+
+  - name: publish
+    image: docker
+    commands:
+      - docker login --username $DOCKER_USERNAME --password $DOCKER_PASSWORD
+      - docker push tlsprint/matrixssl:3-9-0-open
+    environment:
+      DOCKER_USERNAME:
+        from_secret: docker_username
+      DOCKER_PASSWORD:
+        from_secret: docker_password
+
+    # Give access to host docker, the previously build image is available here.
+    volumes:
+      - name: docker
+        path: /var/run/docker.sock
+
+    when:
+      branch:
+        - master
+
+
+volumes:
+    # Expose host docker to build steps
+  - name: docker
+    host:
+      path: /var/run/docker.sock
+
+---
+kind: pipeline
+name: 3-9-1-open
+
+steps:
+    # Build the implementation and set the appropriate tag
+  - name: build
+    image: docker
+    commands:
+      - docker build .
+        --tag tlsprint/matrixssl:3-9-1-open
+        --file dockerfiles/3-9-1-open/Dockerfile
+
+    # Store the resulting image on the host docker, so it can be used in the
+    # next step.
+    volumes:
+      - name: docker
+        path: /var/run/docker.sock
+
+    # Start the implementation, the system under test, in the background
+  - name: sut
+    image: tlsprint/matrixssl:3-9-1-open
+    detach: true
+
+  - name: verify TLS10
+    image: tlsprint/tlsattackerconnector
+    commands:
+      - sleep 5
+      - connector
+        --targetHost sut
+        --protocolVersion TLS10
+        --cipherSuite "TLS_RSA_WITH_3DES_EDE_CBC_SHA,TLS_RSA_WITH_AES_128_CBC_SHA"
+        --merge-application
+        --test | tee result.log
+      - "grep -e 'ApplicationData: APPLICATION|ConnectionClosed' -e 'ApplicationData: APPLICATION|ALERT_WARNING_CLOSE_NOTIFY|ConnectionClosed' result.log"
+
+  - name: verify TLS11
+    image: tlsprint/tlsattackerconnector
+    commands:
+      - sleep 5
+      - connector
+        --targetHost sut
+        --protocolVersion TLS11
+        --cipherSuite "TLS_RSA_WITH_3DES_EDE_CBC_SHA,TLS_RSA_WITH_AES_128_CBC_SHA"
+        --merge-application
+        --test | tee result.log
+      - "grep -e 'ApplicationData: APPLICATION|ConnectionClosed' -e 'ApplicationData: APPLICATION|ALERT_WARNING_CLOSE_NOTIFY|ConnectionClosed' result.log"
+
+  - name: verify TLS12
+    image: tlsprint/tlsattackerconnector
+    commands:
+      - sleep 5
+      - connector
+        --targetHost sut
+        --protocolVersion TLS12
+        --cipherSuite "TLS_RSA_WITH_3DES_EDE_CBC_SHA,TLS_RSA_WITH_AES_128_CBC_SHA"
+        --merge-application
+        --test | tee result.log
+      - "grep -e 'ApplicationData: APPLICATION|ConnectionClosed' -e 'ApplicationData: APPLICATION|ALERT_WARNING_CLOSE_NOTIFY|ConnectionClosed' result.log"
+
+  - name: publish
+    image: docker
+    commands:
+      - docker login --username $DOCKER_USERNAME --password $DOCKER_PASSWORD
+      - docker push tlsprint/matrixssl:3-9-1-open
+    environment:
+      DOCKER_USERNAME:
+        from_secret: docker_username
+      DOCKER_PASSWORD:
+        from_secret: docker_password
+
+    # Give access to host docker, the previously build image is available here.
+    volumes:
+      - name: docker
+        path: /var/run/docker.sock
+
+    when:
+      branch:
+        - master
+
+
+volumes:
+    # Expose host docker to build steps
+  - name: docker
+    host:
+      path: /var/run/docker.sock
+
+---
+kind: pipeline
+name: 3-9-3-open
+
+steps:
+    # Build the implementation and set the appropriate tag
+  - name: build
+    image: docker
+    commands:
+      - docker build .
+        --tag tlsprint/matrixssl:3-9-3-open
+        --file dockerfiles/3-9-3-open/Dockerfile
+
+    # Store the resulting image on the host docker, so it can be used in the
+    # next step.
+    volumes:
+      - name: docker
+        path: /var/run/docker.sock
+
+    # Start the implementation, the system under test, in the background
+  - name: sut
+    image: tlsprint/matrixssl:3-9-3-open
+    detach: true
+
+  - name: verify TLS10
+    image: tlsprint/tlsattackerconnector
+    commands:
+      - sleep 5
+      - connector
+        --targetHost sut
+        --protocolVersion TLS10
+        --cipherSuite "TLS_RSA_WITH_3DES_EDE_CBC_SHA,TLS_RSA_WITH_AES_128_CBC_SHA"
+        --merge-application
+        --test | tee result.log
+      - "grep -e 'ApplicationData: APPLICATION|ConnectionClosed' -e 'ApplicationData: APPLICATION|ALERT_WARNING_CLOSE_NOTIFY|ConnectionClosed' result.log"
+
+  - name: verify TLS11
+    image: tlsprint/tlsattackerconnector
+    commands:
+      - sleep 5
+      - connector
+        --targetHost sut
+        --protocolVersion TLS11
+        --cipherSuite "TLS_RSA_WITH_3DES_EDE_CBC_SHA,TLS_RSA_WITH_AES_128_CBC_SHA"
+        --merge-application
+        --test | tee result.log
+      - "grep -e 'ApplicationData: APPLICATION|ConnectionClosed' -e 'ApplicationData: APPLICATION|ALERT_WARNING_CLOSE_NOTIFY|ConnectionClosed' result.log"
+
+  - name: verify TLS12
+    image: tlsprint/tlsattackerconnector
+    commands:
+      - sleep 5
+      - connector
+        --targetHost sut
+        --protocolVersion TLS12
+        --cipherSuite "TLS_RSA_WITH_3DES_EDE_CBC_SHA,TLS_RSA_WITH_AES_128_CBC_SHA"
+        --merge-application
+        --test | tee result.log
+      - "grep -e 'ApplicationData: APPLICATION|ConnectionClosed' -e 'ApplicationData: APPLICATION|ALERT_WARNING_CLOSE_NOTIFY|ConnectionClosed' result.log"
+
+  - name: publish
+    image: docker
+    commands:
+      - docker login --username $DOCKER_USERNAME --password $DOCKER_PASSWORD
+      - docker push tlsprint/matrixssl:3-9-3-open
+    environment:
+      DOCKER_USERNAME:
+        from_secret: docker_username
+      DOCKER_PASSWORD:
+        from_secret: docker_password
+
+    # Give access to host docker, the previously build image is available here.
+    volumes:
+      - name: docker
+        path: /var/run/docker.sock
+
+    when:
+      branch:
+        - master
+
+
+volumes:
+    # Expose host docker to build steps
+  - name: docker
+    host:
+      path: /var/run/docker.sock
+
+---
+kind: pipeline
+name: 3-9-5-open
+
+steps:
+    # Build the implementation and set the appropriate tag
+  - name: build
+    image: docker
+    commands:
+      - docker build .
+        --tag tlsprint/matrixssl:3-9-5-open
+        --file dockerfiles/3-9-5-open/Dockerfile
+
+    # Store the resulting image on the host docker, so it can be used in the
+    # next step.
+    volumes:
+      - name: docker
+        path: /var/run/docker.sock
+
+    # Start the implementation, the system under test, in the background
+  - name: sut
+    image: tlsprint/matrixssl:3-9-5-open
+    detach: true
+
+  - name: verify TLS10
+    image: tlsprint/tlsattackerconnector
+    commands:
+      - sleep 5
+      - connector
+        --targetHost sut
+        --protocolVersion TLS10
+        --cipherSuite "TLS_RSA_WITH_3DES_EDE_CBC_SHA,TLS_RSA_WITH_AES_128_CBC_SHA"
+        --merge-application
+        --test | tee result.log
+      - "grep -e 'ApplicationData: APPLICATION|ConnectionClosed' -e 'ApplicationData: APPLICATION|ALERT_WARNING_CLOSE_NOTIFY|ConnectionClosed' result.log"
+
+  - name: verify TLS11
+    image: tlsprint/tlsattackerconnector
+    commands:
+      - sleep 5
+      - connector
+        --targetHost sut
+        --protocolVersion TLS11
+        --cipherSuite "TLS_RSA_WITH_3DES_EDE_CBC_SHA,TLS_RSA_WITH_AES_128_CBC_SHA"
+        --merge-application
+        --test | tee result.log
+      - "grep -e 'ApplicationData: APPLICATION|ConnectionClosed' -e 'ApplicationData: APPLICATION|ALERT_WARNING_CLOSE_NOTIFY|ConnectionClosed' result.log"
+
+  - name: verify TLS12
+    image: tlsprint/tlsattackerconnector
+    commands:
+      - sleep 5
+      - connector
+        --targetHost sut
+        --protocolVersion TLS12
+        --cipherSuite "TLS_RSA_WITH_3DES_EDE_CBC_SHA,TLS_RSA_WITH_AES_128_CBC_SHA"
+        --merge-application
+        --test | tee result.log
+      - "grep -e 'ApplicationData: APPLICATION|ConnectionClosed' -e 'ApplicationData: APPLICATION|ALERT_WARNING_CLOSE_NOTIFY|ConnectionClosed' result.log"
+
+  - name: publish
+    image: docker
+    commands:
+      - docker login --username $DOCKER_USERNAME --password $DOCKER_PASSWORD
+      - docker push tlsprint/matrixssl:3-9-5-open
+    environment:
+      DOCKER_USERNAME:
+        from_secret: docker_username
+      DOCKER_PASSWORD:
+        from_secret: docker_password
+
+    # Give access to host docker, the previously build image is available here.
+    volumes:
+      - name: docker
+        path: /var/run/docker.sock
+
+    when:
+      branch:
+        - master
+
+
+volumes:
+    # Expose host docker to build steps
+  - name: docker
+    host:
+      path: /var/run/docker.sock
+
+---
+kind: pipeline
+name: 4-0-0-open
+
+steps:
+    # Build the implementation and set the appropriate tag
+  - name: build
+    image: docker
+    commands:
+      - docker build .
+        --tag tlsprint/matrixssl:4-0-0-open
+        --file dockerfiles/4-0-0-open/Dockerfile
+
+    # Store the resulting image on the host docker, so it can be used in the
+    # next step.
+    volumes:
+      - name: docker
+        path: /var/run/docker.sock
+
+    # Start the implementation, the system under test, in the background
+  - name: sut
+    image: tlsprint/matrixssl:4-0-0-open
+    detach: true
+
+  - name: verify TLS10
+    image: tlsprint/tlsattackerconnector
+    commands:
+      - sleep 5
+      - connector
+        --targetHost sut
+        --protocolVersion TLS10
+        --cipherSuite "TLS_RSA_WITH_3DES_EDE_CBC_SHA,TLS_RSA_WITH_AES_128_CBC_SHA"
+        --merge-application
+        --test | tee result.log
+      - "grep -e 'ApplicationData: APPLICATION|ConnectionClosed' -e 'ApplicationData: APPLICATION|ALERT_WARNING_CLOSE_NOTIFY|ConnectionClosed' result.log"
+
+  - name: verify TLS11
+    image: tlsprint/tlsattackerconnector
+    commands:
+      - sleep 5
+      - connector
+        --targetHost sut
+        --protocolVersion TLS11
+        --cipherSuite "TLS_RSA_WITH_3DES_EDE_CBC_SHA,TLS_RSA_WITH_AES_128_CBC_SHA"
+        --merge-application
+        --test | tee result.log
+      - "grep -e 'ApplicationData: APPLICATION|ConnectionClosed' -e 'ApplicationData: APPLICATION|ALERT_WARNING_CLOSE_NOTIFY|ConnectionClosed' result.log"
+
+  - name: verify TLS12
+    image: tlsprint/tlsattackerconnector
+    commands:
+      - sleep 5
+      - connector
+        --targetHost sut
+        --protocolVersion TLS12
+        --cipherSuite "TLS_RSA_WITH_3DES_EDE_CBC_SHA,TLS_RSA_WITH_AES_128_CBC_SHA"
+        --merge-application
+        --test | tee result.log
+      - "grep -e 'ApplicationData: APPLICATION|ConnectionClosed' -e 'ApplicationData: APPLICATION|ALERT_WARNING_CLOSE_NOTIFY|ConnectionClosed' result.log"
+
+  - name: publish
+    image: docker
+    commands:
+      - docker login --username $DOCKER_USERNAME --password $DOCKER_PASSWORD
+      - docker push tlsprint/matrixssl:4-0-0-open
+    environment:
+      DOCKER_USERNAME:
+        from_secret: docker_username
+      DOCKER_PASSWORD:
+        from_secret: docker_password
+
+    # Give access to host docker, the previously build image is available here.
+    volumes:
+      - name: docker
+        path: /var/run/docker.sock
+
+    when:
+      branch:
+        - master
+
+
+volumes:
+    # Expose host docker to build steps
+  - name: docker
+    host:
+      path: /var/run/docker.sock
+
+---
+kind: pipeline
+name: 4-0-1-open
+
+steps:
+    # Build the implementation and set the appropriate tag
+  - name: build
+    image: docker
+    commands:
+      - docker build .
+        --tag tlsprint/matrixssl:4-0-1-open
+        --file dockerfiles/4-0-1-open/Dockerfile
+
+    # Store the resulting image on the host docker, so it can be used in the
+    # next step.
+    volumes:
+      - name: docker
+        path: /var/run/docker.sock
+
+    # Start the implementation, the system under test, in the background
+  - name: sut
+    image: tlsprint/matrixssl:4-0-1-open
+    detach: true
+
+  - name: verify TLS10
+    image: tlsprint/tlsattackerconnector
+    commands:
+      - sleep 5
+      - connector
+        --targetHost sut
+        --protocolVersion TLS10
+        --cipherSuite "TLS_RSA_WITH_3DES_EDE_CBC_SHA,TLS_RSA_WITH_AES_128_CBC_SHA"
+        --merge-application
+        --test | tee result.log
+      - "grep -e 'ApplicationData: APPLICATION|ConnectionClosed' -e 'ApplicationData: APPLICATION|ALERT_WARNING_CLOSE_NOTIFY|ConnectionClosed' result.log"
+
+  - name: verify TLS11
+    image: tlsprint/tlsattackerconnector
+    commands:
+      - sleep 5
+      - connector
+        --targetHost sut
+        --protocolVersion TLS11
+        --cipherSuite "TLS_RSA_WITH_3DES_EDE_CBC_SHA,TLS_RSA_WITH_AES_128_CBC_SHA"
+        --merge-application
+        --test | tee result.log
+      - "grep -e 'ApplicationData: APPLICATION|ConnectionClosed' -e 'ApplicationData: APPLICATION|ALERT_WARNING_CLOSE_NOTIFY|ConnectionClosed' result.log"
+
+  - name: verify TLS12
+    image: tlsprint/tlsattackerconnector
+    commands:
+      - sleep 5
+      - connector
+        --targetHost sut
+        --protocolVersion TLS12
+        --cipherSuite "TLS_RSA_WITH_3DES_EDE_CBC_SHA,TLS_RSA_WITH_AES_128_CBC_SHA"
+        --merge-application
+        --test | tee result.log
+      - "grep -e 'ApplicationData: APPLICATION|ConnectionClosed' -e 'ApplicationData: APPLICATION|ALERT_WARNING_CLOSE_NOTIFY|ConnectionClosed' result.log"
+
+  - name: publish
+    image: docker
+    commands:
+      - docker login --username $DOCKER_USERNAME --password $DOCKER_PASSWORD
+      - docker push tlsprint/matrixssl:4-0-1-open
+    environment:
+      DOCKER_USERNAME:
+        from_secret: docker_username
+      DOCKER_PASSWORD:
+        from_secret: docker_password
+
+    # Give access to host docker, the previously build image is available here.
+    volumes:
+      - name: docker
+        path: /var/run/docker.sock
+
+    when:
+      branch:
+        - master
+
+
+volumes:
+    # Expose host docker to build steps
+  - name: docker
+    host:
+      path: /var/run/docker.sock
+
+---
+kind: pipeline
+name: 4-0-2-open
+
+steps:
+    # Build the implementation and set the appropriate tag
+  - name: build
+    image: docker
+    commands:
+      - docker build .
+        --tag tlsprint/matrixssl:4-0-2-open
+        --file dockerfiles/4-0-2-open/Dockerfile
+
+    # Store the resulting image on the host docker, so it can be used in the
+    # next step.
+    volumes:
+      - name: docker
+        path: /var/run/docker.sock
+
+    # Start the implementation, the system under test, in the background
+  - name: sut
+    image: tlsprint/matrixssl:4-0-2-open
+    detach: true
+
+  - name: verify TLS10
+    image: tlsprint/tlsattackerconnector
+    commands:
+      - sleep 5
+      - connector
+        --targetHost sut
+        --protocolVersion TLS10
+        --cipherSuite "TLS_RSA_WITH_3DES_EDE_CBC_SHA,TLS_RSA_WITH_AES_128_CBC_SHA"
+        --merge-application
+        --test | tee result.log
+      - "grep -e 'ApplicationData: APPLICATION|ConnectionClosed' -e 'ApplicationData: APPLICATION|ALERT_WARNING_CLOSE_NOTIFY|ConnectionClosed' result.log"
+
+  - name: verify TLS11
+    image: tlsprint/tlsattackerconnector
+    commands:
+      - sleep 5
+      - connector
+        --targetHost sut
+        --protocolVersion TLS11
+        --cipherSuite "TLS_RSA_WITH_3DES_EDE_CBC_SHA,TLS_RSA_WITH_AES_128_CBC_SHA"
+        --merge-application
+        --test | tee result.log
+      - "grep -e 'ApplicationData: APPLICATION|ConnectionClosed' -e 'ApplicationData: APPLICATION|ALERT_WARNING_CLOSE_NOTIFY|ConnectionClosed' result.log"
+
+  - name: verify TLS12
+    image: tlsprint/tlsattackerconnector
+    commands:
+      - sleep 5
+      - connector
+        --targetHost sut
+        --protocolVersion TLS12
+        --cipherSuite "TLS_RSA_WITH_3DES_EDE_CBC_SHA,TLS_RSA_WITH_AES_128_CBC_SHA"
+        --merge-application
+        --test | tee result.log
+      - "grep -e 'ApplicationData: APPLICATION|ConnectionClosed' -e 'ApplicationData: APPLICATION|ALERT_WARNING_CLOSE_NOTIFY|ConnectionClosed' result.log"
+
+  - name: publish
+    image: docker
+    commands:
+      - docker login --username $DOCKER_USERNAME --password $DOCKER_PASSWORD
+      - docker push tlsprint/matrixssl:4-0-2-open
+    environment:
+      DOCKER_USERNAME:
+        from_secret: docker_username
+      DOCKER_PASSWORD:
+        from_secret: docker_password
+
+    # Give access to host docker, the previously build image is available here.
+    volumes:
+      - name: docker
+        path: /var/run/docker.sock
+
+    when:
+      branch:
+        - master
+
+
+volumes:
+    # Expose host docker to build steps
+  - name: docker
+    host:
+      path: /var/run/docker.sock
+
+---
+kind: pipeline
+name: 4-1-0-open
+
+steps:
+    # Build the implementation and set the appropriate tag
+  - name: build
+    image: docker
+    commands:
+      - docker build .
+        --tag tlsprint/matrixssl:4-1-0-open
+        --file dockerfiles/4-1-0-open/Dockerfile
+
+    # Store the resulting image on the host docker, so it can be used in the
+    # next step.
+    volumes:
+      - name: docker
+        path: /var/run/docker.sock
+
+    # Start the implementation, the system under test, in the background
+  - name: sut
+    image: tlsprint/matrixssl:4-1-0-open
+    detach: true
+
+  - name: verify TLS10
+    image: tlsprint/tlsattackerconnector
+    commands:
+      - sleep 5
+      - connector
+        --targetHost sut
+        --protocolVersion TLS10
+        --cipherSuite "TLS_RSA_WITH_3DES_EDE_CBC_SHA,TLS_RSA_WITH_AES_128_CBC_SHA"
+        --merge-application
+        --test | tee result.log
+      - "grep -e 'ApplicationData: APPLICATION|ConnectionClosed' -e 'ApplicationData: APPLICATION|ALERT_WARNING_CLOSE_NOTIFY|ConnectionClosed' result.log"
+
+  - name: verify TLS11
+    image: tlsprint/tlsattackerconnector
+    commands:
+      - sleep 5
+      - connector
+        --targetHost sut
+        --protocolVersion TLS11
+        --cipherSuite "TLS_RSA_WITH_3DES_EDE_CBC_SHA,TLS_RSA_WITH_AES_128_CBC_SHA"
+        --merge-application
+        --test | tee result.log
+      - "grep -e 'ApplicationData: APPLICATION|ConnectionClosed' -e 'ApplicationData: APPLICATION|ALERT_WARNING_CLOSE_NOTIFY|ConnectionClosed' result.log"
+
+  - name: verify TLS12
+    image: tlsprint/tlsattackerconnector
+    commands:
+      - sleep 5
+      - connector
+        --targetHost sut
+        --protocolVersion TLS12
+        --cipherSuite "TLS_RSA_WITH_3DES_EDE_CBC_SHA,TLS_RSA_WITH_AES_128_CBC_SHA"
+        --merge-application
+        --test | tee result.log
+      - "grep -e 'ApplicationData: APPLICATION|ConnectionClosed' -e 'ApplicationData: APPLICATION|ALERT_WARNING_CLOSE_NOTIFY|ConnectionClosed' result.log"
+
+  - name: publish
+    image: docker
+    commands:
+      - docker login --username $DOCKER_USERNAME --password $DOCKER_PASSWORD
+      - docker push tlsprint/matrixssl:4-1-0-open
+    environment:
+      DOCKER_USERNAME:
+        from_secret: docker_username
+      DOCKER_PASSWORD:
+        from_secret: docker_password
+
+    # Give access to host docker, the previously build image is available here.
+    volumes:
+      - name: docker
+        path: /var/run/docker.sock
+
+    when:
+      branch:
+        - master
+
+
+volumes:
+    # Expose host docker to build steps
+  - name: docker
+    host:
+      path: /var/run/docker.sock
+
+---
+kind: pipeline
+name: 4-2-1-open
+
+steps:
+    # Build the implementation and set the appropriate tag
+  - name: build
+    image: docker
+    commands:
+      - docker build .
+        --tag tlsprint/matrixssl:4-2-1-open
+        --file dockerfiles/4-2-1-open/Dockerfile
+
+    # Store the resulting image on the host docker, so it can be used in the
+    # next step.
+    volumes:
+      - name: docker
+        path: /var/run/docker.sock
+
+    # Start the implementation, the system under test, in the background
+  - name: sut
+    image: tlsprint/matrixssl:4-2-1-open
+    detach: true
+
+  - name: verify TLS10
+    image: tlsprint/tlsattackerconnector
+    commands:
+      - sleep 5
+      - connector
+        --targetHost sut
+        --protocolVersion TLS10
+        --cipherSuite "TLS_RSA_WITH_3DES_EDE_CBC_SHA,TLS_RSA_WITH_AES_128_CBC_SHA"
+        --merge-application
+        --test | tee result.log
+      - "grep -e 'ApplicationData: APPLICATION|ConnectionClosed' -e 'ApplicationData: APPLICATION|ALERT_WARNING_CLOSE_NOTIFY|ConnectionClosed' result.log"
+
+  - name: verify TLS11
+    image: tlsprint/tlsattackerconnector
+    commands:
+      - sleep 5
+      - connector
+        --targetHost sut
+        --protocolVersion TLS11
+        --cipherSuite "TLS_RSA_WITH_3DES_EDE_CBC_SHA,TLS_RSA_WITH_AES_128_CBC_SHA"
+        --merge-application
+        --test | tee result.log
+      - "grep -e 'ApplicationData: APPLICATION|ConnectionClosed' -e 'ApplicationData: APPLICATION|ALERT_WARNING_CLOSE_NOTIFY|ConnectionClosed' result.log"
+
+  - name: verify TLS12
+    image: tlsprint/tlsattackerconnector
+    commands:
+      - sleep 5
+      - connector
+        --targetHost sut
+        --protocolVersion TLS12
+        --cipherSuite "TLS_RSA_WITH_3DES_EDE_CBC_SHA,TLS_RSA_WITH_AES_128_CBC_SHA"
+        --merge-application
+        --test | tee result.log
+      - "grep -e 'ApplicationData: APPLICATION|ConnectionClosed' -e 'ApplicationData: APPLICATION|ALERT_WARNING_CLOSE_NOTIFY|ConnectionClosed' result.log"
+
+  - name: publish
+    image: docker
+    commands:
+      - docker login --username $DOCKER_USERNAME --password $DOCKER_PASSWORD
+      - docker push tlsprint/matrixssl:4-2-1-open
+    environment:
+      DOCKER_USERNAME:
+        from_secret: docker_username
+      DOCKER_PASSWORD:
+        from_secret: docker_password
+
+    # Give access to host docker, the previously build image is available here.
+    volumes:
+      - name: docker
+        path: /var/run/docker.sock
+
+    when:
+      branch:
+        - master
+
+
+volumes:
+    # Expose host docker to build steps
+  - name: docker
+    host:
+      path: /var/run/docker.sock
+
+---
+kind: pipeline
+name: 4-2-2-open
+
+steps:
+    # Build the implementation and set the appropriate tag
+  - name: build
+    image: docker
+    commands:
+      - docker build .
+        --tag tlsprint/matrixssl:4-2-2-open
+        --file dockerfiles/4-2-2-open/Dockerfile
+
+    # Store the resulting image on the host docker, so it can be used in the
+    # next step.
+    volumes:
+      - name: docker
+        path: /var/run/docker.sock
+
+    # Start the implementation, the system under test, in the background
+  - name: sut
+    image: tlsprint/matrixssl:4-2-2-open
+    detach: true
+
+  - name: verify TLS10
+    image: tlsprint/tlsattackerconnector
+    commands:
+      - sleep 5
+      - connector
+        --targetHost sut
+        --protocolVersion TLS10
+        --cipherSuite "TLS_RSA_WITH_3DES_EDE_CBC_SHA,TLS_RSA_WITH_AES_128_CBC_SHA"
+        --merge-application
+        --test | tee result.log
+      - "grep -e 'ApplicationData: APPLICATION|ConnectionClosed' -e 'ApplicationData: APPLICATION|ALERT_WARNING_CLOSE_NOTIFY|ConnectionClosed' result.log"
+
+  - name: verify TLS11
+    image: tlsprint/tlsattackerconnector
+    commands:
+      - sleep 5
+      - connector
+        --targetHost sut
+        --protocolVersion TLS11
+        --cipherSuite "TLS_RSA_WITH_3DES_EDE_CBC_SHA,TLS_RSA_WITH_AES_128_CBC_SHA"
+        --merge-application
+        --test | tee result.log
+      - "grep -e 'ApplicationData: APPLICATION|ConnectionClosed' -e 'ApplicationData: APPLICATION|ALERT_WARNING_CLOSE_NOTIFY|ConnectionClosed' result.log"
+
+  - name: verify TLS12
+    image: tlsprint/tlsattackerconnector
+    commands:
+      - sleep 5
+      - connector
+        --targetHost sut
+        --protocolVersion TLS12
+        --cipherSuite "TLS_RSA_WITH_3DES_EDE_CBC_SHA,TLS_RSA_WITH_AES_128_CBC_SHA"
+        --merge-application
+        --test | tee result.log
+      - "grep -e 'ApplicationData: APPLICATION|ConnectionClosed' -e 'ApplicationData: APPLICATION|ALERT_WARNING_CLOSE_NOTIFY|ConnectionClosed' result.log"
+
+  - name: publish
+    image: docker
+    commands:
+      - docker login --username $DOCKER_USERNAME --password $DOCKER_PASSWORD
+      - docker push tlsprint/matrixssl:4-2-2-open
+    environment:
+      DOCKER_USERNAME:
+        from_secret: docker_username
+      DOCKER_PASSWORD:
+        from_secret: docker_password
+
+    # Give access to host docker, the previously build image is available here.
+    volumes:
+      - name: docker
+        path: /var/run/docker.sock
+
+    when:
+      branch:
+        - master
+
+
+volumes:
+    # Expose host docker to build steps
+  - name: docker
+    host:
+      path: /var/run/docker.sock
+
+---
+kind: pipeline
+name: 4-3-0-open
+
+steps:
+    # Build the implementation and set the appropriate tag
+  - name: build
+    image: docker
+    commands:
+      - docker build .
+        --tag tlsprint/matrixssl:4-3-0-open
+        --file dockerfiles/4-3-0-open/Dockerfile
+
+    # Store the resulting image on the host docker, so it can be used in the
+    # next step.
+    volumes:
+      - name: docker
+        path: /var/run/docker.sock
+
+    # Start the implementation, the system under test, in the background
+  - name: sut
+    image: tlsprint/matrixssl:4-3-0-open
+    detach: true
+
+  - name: verify TLS10
+    image: tlsprint/tlsattackerconnector
+    commands:
+      - sleep 5
+      - connector
+        --targetHost sut
+        --protocolVersion TLS10
+        --cipherSuite "TLS_RSA_WITH_3DES_EDE_CBC_SHA,TLS_RSA_WITH_AES_128_CBC_SHA"
+        --merge-application
+        --test | tee result.log
+      - "grep -e 'ApplicationData: APPLICATION|ConnectionClosed' -e 'ApplicationData: APPLICATION|ALERT_WARNING_CLOSE_NOTIFY|ConnectionClosed' result.log"
+
+  - name: verify TLS11
+    image: tlsprint/tlsattackerconnector
+    commands:
+      - sleep 5
+      - connector
+        --targetHost sut
+        --protocolVersion TLS11
+        --cipherSuite "TLS_RSA_WITH_3DES_EDE_CBC_SHA,TLS_RSA_WITH_AES_128_CBC_SHA"
+        --merge-application
+        --test | tee result.log
+      - "grep -e 'ApplicationData: APPLICATION|ConnectionClosed' -e 'ApplicationData: APPLICATION|ALERT_WARNING_CLOSE_NOTIFY|ConnectionClosed' result.log"
+
+  - name: verify TLS12
+    image: tlsprint/tlsattackerconnector
+    commands:
+      - sleep 5
+      - connector
+        --targetHost sut
+        --protocolVersion TLS12
+        --cipherSuite "TLS_RSA_WITH_3DES_EDE_CBC_SHA,TLS_RSA_WITH_AES_128_CBC_SHA"
+        --merge-application
+        --test | tee result.log
+      - "grep -e 'ApplicationData: APPLICATION|ConnectionClosed' -e 'ApplicationData: APPLICATION|ALERT_WARNING_CLOSE_NOTIFY|ConnectionClosed' result.log"
+
+  - name: publish
+    image: docker
+    commands:
+      - docker login --username $DOCKER_USERNAME --password $DOCKER_PASSWORD
+      - docker push tlsprint/matrixssl:4-3-0-open
+    environment:
+      DOCKER_USERNAME:
+        from_secret: docker_username
+      DOCKER_PASSWORD:
+        from_secret: docker_password
+
+    # Give access to host docker, the previously build image is available here.
+    volumes:
+      - name: docker
+        path: /var/run/docker.sock
+
+    when:
+      branch:
+        - master
+
+
+volumes:
+    # Expose host docker to build steps
+  - name: docker
+    host:
+      path: /var/run/docker.sock
+
